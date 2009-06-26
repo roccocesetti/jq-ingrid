@@ -1,12 +1,8 @@
-/* modif .datagrid */
 .datagrid td, .datagrid th {
-	font: 11px Tahoma; 
+	font-size: 11px;
+	font-family: Tahoma, Verdana, Arial, sans-serif; 
 	margin: 0px;
 	border-bottom: 1px solid #ABABAB;
-}
-
-body {
-	padding : 20px;
 }
 
 table.datagrid {
