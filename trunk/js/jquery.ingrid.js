@@ -1,7 +1,8 @@
 /**
  * Ingrid : JQuery Datagrid Control
  *
- * Copyright (c) 2007-2009 Matthew Knight (http://www.reconstrukt.com http://slu.sh)
+ * Copyright (c) 2009 Matthew Knight (http://www.reconstrukt.com http://slu.sh)
+ *                    Patrice Blanchardie (http://www.inisos.fr)
  * 
  * Dual licensed under the MIT (http://www.opensource.org/licenses/mit-license.php) 
  * and GPL (http://www.opensource.org/licenses/gpl-license.php) licenses.
@@ -17,6 +18,13 @@
  *              result error handler,
  *              header auto-resize
  * - feature: new param: unsortable columns
+ * 
+ * Revision: 0.9.3.1 2009/06/29 Patrice Blanchardie
+ * - bug fixes: unable to clear last selected row from cookie
+ *              added onRowSelect callback during pre-selection
+ * - feature: new functions : (un)select all
+ *            selection is now stored for all pages!
+ *            page changed callback
  *
  */
 
@@ -71,6 +79,7 @@ jQuery.fn.ingrid = function(o){
 		pageLoadingClass: 'grid-page-loading',
 		pageLoadingDoneClass: 'grid-page-loading-done',
 		pageViewingRecordsInfoClass: 'grid-page-viewing-records-info',
+		pageChanged: function(p){},             // called when page changed (loading finished)
 
 		/* ajax stuff */
 		url: 'remote.php',						// url to fetch data
@@ -305,6 +314,8 @@ jQuery.fn.ingrid = function(o){
 												if (cfg.totalRecords > 0) {
 													var totr = b.find('tr').length;
 													pv.updateViewInfo(totr, p);
+													if(cfg.pageChanged)
+														cfg.pageChanged(p);
 												}
 												pload.addClass(cfg.pageLoadingDoneClass);
 											});
@@ -409,6 +420,9 @@ jQuery.fn.ingrid = function(o){
 
 	// create methods on our grid object
 	g.extend({
+		
+		selected_ids : [],
+		
 		load : function(params, cb) {
 			var data = jQuery.extend(cfg.extraParams, params);
 			
@@ -530,10 +544,9 @@ jQuery.fn.ingrid = function(o){
 		
 		saveSelectedRows : function() {
 			if (jQuery.cookie) {
-				var row_ids		= g.getSelectedRowIds();
-				if (row_ids.length > 0) {
-					jQuery.cookie( this.attr('id') + '_rows', row_ids.join(','), {expires: cfg.cookieExpiresDays, path: cfg.cookiePath});
-				}				
+				//var row_ids		= g.getSelectedRowIds();
+				var row_ids = g.selected_ids;
+				jQuery.cookie( this.attr('id') + '_rows', row_ids.join(','), {expires: cfg.cookieExpiresDays, path: cfg.cookiePath});				
 			}
 		},
 		
@@ -592,6 +605,20 @@ jQuery.fn.ingrid = function(o){
 			return this.find("tbody tr[_selected='true']");
 		},
 		
+		unSelectAll : function() {
+			g.getSelectedRows().each(function() {
+				$(this).attr("_selected", "true");
+				$(this).click();
+			});
+		},
+		
+		selectAll : function() {
+			this.find("tbody tr").each(function() {
+				$(this).attr("_selected", "false");
+				$(this).click();
+			});
+		},
+		
 		// returns an array of IDs (current view)
 		getSelectedRowIds : function() {
 			var rows 			= g.getSelectedRows();
@@ -639,7 +666,12 @@ jQuery.fn.ingrid = function(o){
 
 			// make one pass of the grid, 
 			// initialize properties on rows & columns
-			var str_ids = '|' + g.getSavedRowIds().join('|') + '|';
+			
+			// old way to store ids
+			//var str_ids = '|' + g.getSavedRowIds().join('|') + '|';
+			
+			// pre-selected rows
+			g.selected_ids = g.getSavedRowIds();
 			
 			this.getRows().each(function(r){
 				
@@ -659,28 +691,6 @@ jQuery.fn.ingrid = function(o){
 					}
 				}
 				
-				// selection behaviour
-				if (cfg.rowSelection == true) {
-					jQuery(this).click(function(){
-						if (jQuery(this).attr('_selected')) {
-							jQuery(this).attr('_selected') == 'true' ?
-								jQuery(this).attr('_selected', 'false').removeClass(cfg.rowSelectedClass) :
-								jQuery(this).attr('_selected', 'true').addClass(cfg.rowSelectedClass);
-							
-						} else {
-							jQuery(this).attr('_selected', 'true').addClass(cfg.rowSelectedClass);
-						}
-						if (cfg.onRowSelect) {
-							cfg.onRowSelect(this, (jQuery(this).attr('_selected') == 'true' ? true : false) );
-						}
-					});
-					
-					// previously selected rows
-					if (jQuery(this).attr('id') && str_ids.indexOf( '|' + jQuery(this).attr('id') + '|' ) != -1) {
-						jQuery(this).attr('_selected', 'true').addClass(cfg.rowSelectedClass);
-					}
-				}
-				
 				// setup column IDs & classes on row's cells
 				jQuery(this).find('td').each(function(i){
 					// column IDs & width
@@ -696,6 +706,46 @@ jQuery.fn.ingrid = function(o){
 						}
 					}
 				});
+				
+				// selection behaviour
+				if (cfg.rowSelection == true) {
+					jQuery(this).click(function() {
+						// test array state
+						isAlreadySelected = jQuery(this).attr('id') != undefined && jQuery.inArray(jQuery(this).attr('id'), g.selected_ids) != -1;
+						// test view state
+						if (jQuery(this).attr('_selected') && jQuery(this).attr('_selected') == 'true') {
+							// switch to unselected state
+							jQuery(this).attr('_selected', 'false').removeClass(cfg.rowSelectedClass);
+							// remove from selected_ids array
+							if(isAlreadySelected)
+								g.selected_ids.splice(jQuery.inArray(jQuery(this).attr('id'), g.selected_ids),1);
+						} else {
+							// switch to selected state
+							jQuery(this).attr('_selected', 'true').addClass(cfg.rowSelectedClass);
+							// push to selected_ids array
+							if(!isAlreadySelected)
+								g.selected_ids.push(jQuery(this).attr('id'));
+						}
+						
+						// callback
+						if (cfg.onRowSelect)
+							cfg.onRowSelect(this, (jQuery(this).attr('_selected') == 'true') );
+					});
+					
+					// previously selected rows
+					// (use table instead of str)
+					//if (jQuery(this).attr('id') && str_ids.indexOf( '|' + jQuery(this).attr('id') + '|' ) != -1) {
+					if (jQuery(this).attr('id')!=undefined && jQuery.inArray(jQuery(this).attr('id'), g.selected_ids) != -1) {
+						// switch to selected state
+						jQuery(this).attr('_selected', 'true').addClass(cfg.rowSelectedClass);
+						// push to selected_ids array
+						if(jQuery(this).attr('id') == undefined || jQuery.inArray(jQuery(this).attr('id'), g.selected_ids) == -1)
+							g.selected_ids.push(jQuery(this).attr('id'));
+						// callback
+						if (cfg.onRowSelect)
+							cfg.onRowSelect(this, true);
+					}
+				}
 			});
 		}			
 	});
@@ -809,4 +859,3 @@ jQuery.fn.ingrid = function(o){
 	});
 
 };
-
