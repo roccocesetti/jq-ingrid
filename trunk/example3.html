@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Ingrid. the jQuery Datagrid</title>
+<style media="all" type="text/css">@import "css/site.css";</style>
+
+<script type="text/javascript" src="js/jquery-1.2.js"></script>
+
+<script type="text/javascript" src="js/jquery.ingrid-0.9.2.js"></script>
+
+<!-- to have Ingrid save her state (selected rows, page number, column sort & direction; just include the jQ cookie plugin -->
+<script type="text/javascript" src="js/jquery.cookie.js"></script>
+
+<script type="text/javascript">
+$(document).ready(
+	function() {
+		$("#table1").ingrid({ 
+			url: 'remote.php',
+			height: 350,
+			initialLoad: true,
+			rowClasses: ['grid-row-style1','grid-row-style1','grid-row-style2','grid-row-style1','grid-row-style1','grid-row-style3'],
+			sorting: false,
+			paging: true,
+			totalRecords: 1000,
+			extraParams: {sessid : 'some_session_token_here'}			
+		});
+	}
+); 
+</script>
+<style media="all" type="text/css">@import "css/ingrid.css";</style>
+	
+</head>
+<body>
+
+	<a name="top" href="index.html" title="Ingrid, the jQuery Datagrid.">
+	<img src="images/ingrid.gif" border="0" height="26" width="75" alt="Ingrid, the jQuery Datagrid." vspace="10" />
+	</a>
+	
+	<div class="demo">
+		<a href="example1.html">Example 1.</a>
+		&nbsp;&nbsp;
+		<a href="example2.html">Example 2.</a>
+		&nbsp;&nbsp;
+		<a href="example3.html">Example 3.</a>
+	</div>
+
+<table id="table1">
+<thead>
+<tr>
+<th>Date / Time</th>
+<th>Station</th>
+<th>Track</th>
+<th>Artist</th>
+</tr>
+</thead>
+<tbody>
+<tr><td>static col 1</td><td>static col 2</td><td>static col 3</td><td>static col 4</td></tr>
+<tr><td>static col 1</td><td>static col 2</td><td>static col 3</td><td>static col 4</td></tr>
+<tr><td>static col 1</td><td>static col 2</td><td>static col 3</td><td>static col 4</td></tr>
+<tr><td>static col 1</td><td>static col 2</td><td>static col 3</td><td>static col 4</td></tr>
+<tr><td>static col 1</td><td>static col 2</td><td>static col 3</td><td>static col 4</td></tr>
+<tr><td>static col 1</td><td>static col 2</td><td>static col 3</td><td>static col 4</td></tr>
+<tr><td>static col 1</td><td>static col 2</td><td>static col 3</td><td>static col 4</td></tr>
+<tr><td>static col 1</td><td>static col 2</td><td>static col 3</td><td>static col 4</td></tr>
+<tr><td>static col 1</td><td>static col 2</td><td>static col 3</td><td>static col 4</td></tr>
+<tr><td>static col 1</td><td>static col 2</td><td>static col 3</td><td>static col 4</td></tr>
+<tr><td>static col 1</td><td>static col 2</td><td>static col 3</td><td>static col 4</td></tr>
+<tr><td>static col 1</td><td>static col 2</td><td>static col 3</td><td>static col 4</td></tr>
+<tr><td>static col 1</td><td>static col 2</td><td>static col 3</td><td>static col 4</td></tr>
+<tr><td>static col 1</td><td>static col 2</td><td>static col 3</td><td>static col 4</td></tr>
+<tr><td>static col 1</td><td>static col 2</td><td>static col 3</td><td>static col 4</td></tr>
+<tr><td>static col 1</td><td>static col 2</td><td>static col 3</td><td>static col 4</td></tr>
+<tr><td>static col 1</td><td>static col 2</td><td>static col 3</td><td>static col 4</td></tr>
+<tr><td>static col 1</td><td>static col 2</td><td>static col 3</td><td>static col 4</td></tr>
+<tr><td>static col 1</td><td>static col 2</td><td>static col 3</td><td>static col 4</td></tr>
+<tr><td>static col 1</td><td>static col 2</td><td>static col 3</td><td>static col 4</td></tr>
+<tr><td>static col 1</td><td>static col 2</td><td>static col 3</td><td>static col 4</td></tr>
+<tr><td>static col 1</td><td>static col 2</td><td>static col 3</td><td>static col 4</td></tr>
+<tr><td>static col 1</td><td>static col 2</td><td>static col 3</td><td>static col 4</td></tr>
+<tr><td>static col 1</td><td>static col 2</td><td>static col 3</td><td>static col 4</td></tr>
+<tr><td>static col 1</td><td>static col 2</td><td>static col 3</td><td>static col 4</td></tr>
+<tr><td>static col 1</td><td>static col 2</td><td>static col 3</td><td>static col 4</td></tr>
+<tr><td>static col 1</td><td>static col 2</td><td>static col 3</td><td>static col 4</td></tr>
+<tr><td>static col 1</td><td>static col 2</td><td>static col 3</td><td>static col 4</td></tr>
+<tr><td>static col 1</td><td>static col 2</td><td>static col 3</td><td>static col 4</td></tr>
+<tr><td>static col 1</td><td>static col 2</td><td>static col 3</td><td>static col 4</td></tr>
+<tr><td>static col 1</td><td>static col 2</td><td>static col 3</td><td>static col 4</td></tr>
+<tr><td>static col 1</td><td>static col 2</td><td>static col 3</td><td>static col 4</td></tr>
+<tr><td>static col 1</td><td>static col 2</td><td>static col 3</td><td>static col 4</td></tr>
+<tr><td>static col 1</td><td>static col 2</td><td>static col 3</td><td>static col 4</td></tr>
+<tr><td>static col 1</td><td>static col 2</td><td>static col 3</td><td>static col 4</td></tr>
+<tr><td>static col 1</td><td>static col 2</td><td>static col 3</td><td>static col 4</td></tr>
+<tr><td>static col 1</td><td>static col 2</td><td>static col 3</td><td>static col 4</td></tr>
+<tr><td>static col 1</td><td>static col 2</td><td>static col 3</td><td>static col 4</td></tr>
+<tr><td>static col 1</td><td>static col 2</td><td>static col 3</td><td>static col 4</td></tr>
+<tr><td>static col 1</td><td>static col 2</td><td>static col 3</td><td>static col 4</td></tr>
+<tr><td>static col 1</td><td>static col 2</td><td>static col 3</td><td>static col 4</td></tr>
+<tr><td>static col 1</td><td>static col 2</td><td>static col 3</td><td>static col 4</td></tr>
+<tr><td>static col 1</td><td>static col 2</td><td>static col 3</td><td>static col 4</td></tr>
+<tr><td>static col 1</td><td>static col 2</td><td>static col 3</td><td>static col 4</td></tr>
+<tr><td>static col 1</td><td>static col 2</td><td>static col 3</td><td>static col 4</td></tr>
+<tr><td>static col 1</td><td>static col 2</td><td>static col 3</td><td>static col 4</td></tr>
+<tr><td>static col 1</td><td>static col 2</td><td>static col 3</td><td>static col 4</td></tr>
+<tr><td>static col 1</td><td>static col 2</td><td>static col 3</td><td>static col 4</td></tr>
+<tr><td>static col 1</td><td>static col 2</td><td>static col 3</td><td>static col 4</td></tr>
+<tr><td>static col 1</td><td>static col 2</td><td>static col 3</td><td>static col 4</td></tr>
+<tr><td>static col 1</td><td>static col 2</td><td>static col 3</td><td>static col 4</td></tr>
+<tr><td>static col 1</td><td>static col 2</td><td>static col 3</td><td>static col 4</td></tr>
+<tr><td>static col 1</td><td>static col 2</td><td>static col 3</td><td>static col 4</td></tr>
+<tr><td>static col 1</td><td>static col 2</td><td>static col 3</td><td>static col 4</td></tr>
+<tr><td>static col 1</td><td>static col 2</td><td>static col 3</td><td>static col 4</td></tr>
+<tr><td>static col 1</td><td>static col 2</td><td>static col 3</td><td>static col 4</td></tr>
+<tr><td>static col 1</td><td>static col 2</td><td>static col 3</td><td>static col 4</td></tr>
+<tr><td>static col 1</td><td>static col 2</td><td>static col 3</td><td>static col 4</td></tr>
+<tr><td>static col 1</td><td>static col 2</td><td>static col 3</td><td>static col 4</td></tr>
+<tr><td>static col 1</td><td>static col 2</td><td>static col 3</td><td>static col 4</td></tr>
+</tbody>
+</table>
+
+<p>
+Some extras: 
+<br />
+&nbsp; - Setting a total row value allows Ingrid to calculate the total number of pages available
+<br />
+&nbsp; - Pass additional parameters to the server using the <code>extraParams</code> option
+</p>
+
+</p>
+
+
+</body>
+</html>
