@@ -449,7 +449,8 @@ jQuery.fn.ingrid = function(o){
 					// for JSON return type
 					if (cfg.dataType == 'json') {
 						var rows  = eval( '(' + result + ')' );
-						alert('json = ' + rows);
+						// not supported :)
+						alert('json = ' + rows);						
 					}
 					// for HTML (Table) return type
 					if (cfg.dataType == 'html') {
