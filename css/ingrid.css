@@ -53,7 +53,7 @@ table.datagrid th  {
 	background-color: #FFFFBB;
 }
 .grid-row-sel {
-	background-color: #EEEEEE;
+	background-color: yellow;
 	border-bottom: 1px solid #333333;
 }
 .grid-row-sel td {

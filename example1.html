@@ -1,18 +1,21 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Ingrid. the jQuery Datagrid</title>
+<!-- this stylesheet is for page styling only -->
 <style media="all" type="text/css">@import "css/site.css";</style>
 
-<script type="text/javascript" src="js/jquery-1.2.js"></script>
-
-<script type="text/javascript" src="js/jquery.ingrid-0.9.2.js"></script>
-
-<!-- to have Ingrid save her state (selected rows, page number, column sort & direction); just include the jQ cookie plugin -->
+<!-- include jquery lib -->
+<script type="text/javascript" src="js/jquery.js"></script>
+<!-- include ingrid lib -->
+<script type="text/javascript" src="js/jquery.ingrid.js"></script>
+<!-- ingrid default stylesheet -->
+<style media="all" type="text/css">@import "css/ingrid.css";</style>
+<!-- to make ingrid save her state (selected rows, page number, column sort & direction); just include the jQ cookie plugin -->
 <script type="text/javascript" src="js/jquery.cookie.js"></script>
 
+<!-- initialize -->
 <script type="text/javascript">
 $(document).ready(
 	function() {
@@ -27,7 +30,7 @@ $(document).ready(
 										onRowSelect: function(tr, selected){											
 											var str 		= selected ? 'SELECTED' : 'UNSELECTED';
 											var tr_html	= $(tr).html();											
-											alert( str + ' Row. HTML is : ' + tr_html);																						
+											alert( str + ' Row. InnerHTML is : ' + tr_html);																						
 										}										
 									});
 		
@@ -40,24 +43,20 @@ $(document).ready(
 		$('#sel-rows').click(function(){
 			// the 'g' object is ingrid - call methods like so:
 			var rows = mygrid1.g.getSelectedRows();			
-			for (i=0; i<rows.length; i++) {
-				alert( $(rows[i]).html() );
+			for (i=0; i<rows.length; i++) {				
+				var str = 'SELECTED ROW ' + i + " - InnerHTML is : \n";
+				alert( str + $(rows[i]).html() );
 			}			
 		});
 				
 	}
 ); 
 </script>
-
-<!-- ingrid default style -->
-<style media="all" type="text/css">@import "css/ingrid.css";</style>
 	
 </head>
 <body>
 
-<a name="top" href="index.html" title="Ingrid, the jQuery Datagrid.">
-<img src="images/ingrid.gif" border="0" height="26" width="75" alt="Ingrid, the jQuery Datagrid." vspace="10" />
-</a>
+<h1>Ingrid, the jQuery Datagrid.</h1>
 
 <div class="demo">
   <a href="example1.html">Example 1.</a>
@@ -70,121 +69,13 @@ $(document).ready(
 <table id="table1">
   <thead>
     <tr>       
-      <th>Date / Time</th>
-      <th>Station</th>
-      <th>Track</th>
-      <th>Artist</th>
+      <th>Col 0</th>
+      <th>Col 1</th>
+      <th>Col 2</th>
+      <th>Col 3</th>
     </tr>
   </thead>
   <tbody>
-    <tr>
-       <td>static col 1</td>
-       <td>static col 2</td>
-       <td>static col 3</td>
-       <td>static col 4</td>
-    </tr>
-    <tr>
-       <td>static col 1</td>
-       <td>static col 2</td>
-       <td>static col 3</td>
-       <td>static col 4</td>
-    </tr>
-    <tr>
-       <td>static col 1</td>
-       <td>static col 2</td>
-       <td>static col 3</td>
-       <td>static col 4</td>
-    </tr>
-    <tr>
-       <td>static col 1</td>
-       <td>static col 2</td>
-       <td>static col 3</td>
-       <td>static col 4</td>
-    </tr>
-    <tr>
-       <td>static col 1</td>
-       <td>static col 2</td>
-       <td>static col 3</td>
-       <td>static col 4</td>
-    </tr>
-    <tr>
-       <td>static col 1</td>
-       <td>static col 2</td>
-       <td>static col 3</td>
-       <td>static col 4</td>
-    </tr>
-    <tr>
-       <td>static col 1</td>
-       <td>static col 2</td>
-       <td>static col 3</td>
-       <td>static col 4</td>
-    </tr>
-    <tr>
-       <td>static col 1</td>
-       <td>static col 2</td>
-       <td>static col 3</td>
-       <td>static col 4</td>
-    </tr>
-    <tr>
-       <td>static col 1</td>
-       <td>static col 2</td>
-       <td>static col 3</td>
-       <td>static col 4</td>
-    </tr>
-    <tr>
-       <td>static col 1</td>
-       <td>static col 2</td>
-       <td>static col 3</td>
-       <td>static col 4</td>
-    </tr>
-    <tr>
-       <td>static col 1</td>
-       <td>static col 2</td>
-       <td>static col 3</td>
-       <td>static col 4</td>
-    </tr>
-    <tr>
-       <td>static col 1</td>
-       <td>static col 2</td>
-       <td>static col 3</td>
-       <td>static col 4</td>
-    </tr>
-    <tr>
-       <td>static col 1</td>
-       <td>static col 2</td>
-       <td>static col 3</td>
-       <td>static col 4</td>
-    </tr>
-    <tr>
-       <td>static col 1</td>
-       <td>static col 2</td>
-       <td>static col 3</td>
-       <td>static col 4</td>
-    </tr>
-    <tr>
-       <td>static col 1</td>
-       <td>static col 2</td>
-       <td>static col 3</td>
-       <td>static col 4</td>
-    </tr>
-    <tr>
-       <td>static col 1</td>
-       <td>static col 2</td>
-       <td>static col 3</td>
-       <td>static col 4</td>
-    </tr>
-    <tr>
-       <td>static col 1</td>
-       <td>static col 2</td>
-       <td>static col 3</td>
-       <td>static col 4</td>
-    </tr>
-    <tr>
-       <td>static col 1</td>
-       <td>static col 2</td>
-       <td>static col 3</td>
-       <td>static col 4</td>
-    </tr>
     <tr>
        <td>static col 1</td>
        <td>static col 2</td>
@@ -461,7 +352,6 @@ Here's Ingrid with all the bells and whistles:
 &nbsp; - Note: in all examples, we're loading data immediately after Ingrid inializes <br />
 &nbsp; &nbsp; (this replaces the existing <code>&lt;tbody&gt;</code> that you'll see inline.
 </p>
-
 
 </body>
 </html>
