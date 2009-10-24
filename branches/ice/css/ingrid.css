@@ -10,7 +10,7 @@ table.datagrid {
 }
 
 table.datagrid td {
-	padding: 2px;
+	padding: 2px 0 2px 0;
 	text-align: left;
 	overflow: hidden;
 	white-space: nowrap;
@@ -21,7 +21,7 @@ table.datagrid tr  {
 }
 
 table.datagrid th  {
-	padding: 2px;
+	padding: 2px 0 2px 0;
 	text-align: left;
 	font-weight: normal;
 }
@@ -53,7 +53,7 @@ table.datagrid th  {
 	background-color: #FFFFBB;
 }
 .grid-row-sel {
-	background-color: yellow;
+	background-color: #EEEEEE;
 	border-bottom: 1px solid #333333;
 }
 .grid-row-sel td {
@@ -84,21 +84,21 @@ table.datagrid thead {
 Column Sorting Styles
 */
 .grid-sort-asc {
-	background: url('../img/sort-asc.png') no-repeat center left;
+	background: url('../img/sort-asc.gif') no-repeat center left;
 	display: block;
 	height: 18px;
 	padding: 3px 0 0 16px;
 	cursor: pointer;
 }
 .grid-sort-desc {
-	background: url('../img/sort-desc.png') no-repeat center left;
+	background: url('../img/sort-desc.gif') no-repeat center left;
 	display: block;
 	height: 18px;
 	padding: 3px 0 0 16px;
 	cursor: pointer;
 }
 .grid-sort-none {
-	background: url('../img/sort-none.png') no-repeat center left;
+	background: url('../img/sort-none.gif') no-repeat center left;
 	display: block;
 	height: 18px;
 	padding: 3px 0 0 16px;
@@ -112,10 +112,11 @@ Paging Control Styles
 
 /* paging control footer toolbar */
 .grid-page-toolbar {
-	background: url('../img/page-bg.gif') repeat-x;
+	/*background: url('../img/page-bg.gif') repeat-x;*/
+        background-color: #EEEEEE;
 	font: 11px Tahoma;
 	padding-top: 7px;	
-	border-bottom: 1px solid #77ABF2;
+	border-bottom: 1px solid #AAAAAA;
 }
 /* paging control footer toolbar page form (pform) */
 .grid-page-toolbar form {
@@ -123,7 +124,7 @@ Paging Control Styles
 }
 /* first page button (pb1) */
 .grid-page-start {
-	background: url('../img/page-first.png') no-repeat center;
+	background: url('../img/page-first.gif') no-repeat center;
 	display: block;
 	float:left;
 	margin:3px;	
@@ -135,7 +136,7 @@ Paging Control Styles
 }
 /* previous page button (pb2) */
 .grid-page-prev {
-	background: url('../img/page-prev.png') no-repeat center;
+	background: url('../img/page-prev.gif') no-repeat center;
 	display: block;
 	float:left;
 	margin:3px;
@@ -146,7 +147,7 @@ Paging Control Styles
 }
 /* next page button (pb3) */
 .grid-page-next {
-	background: url('../img/page-next.png') no-repeat center;
+	background: url('../img/page-next.gif') no-repeat center;
 	display: block;
 	float:left;
 	margin:3px;
@@ -157,7 +158,7 @@ Paging Control Styles
 }
 /* last page button (pb4) */
 .grid-page-end {
-	background: url('../img/page-last.png') no-repeat center;
+	background: url('../img/page-last.gif') no-repeat center;
 	display: block;
 	float:left;
 	margin:3px;
