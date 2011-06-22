@@ -1,8 +1,8 @@
 /**
- * Ingrid : JQuery Datagrid Control
+ * Ingrid: jQuery Datagrid Control
  *
- * Copyright (c) 2009 Matthew Knight (http://www.reconstrukt.com http://slu.sh)
- *                    Patrice Blanchardie (http://www.inisos.fr)
+ * Copyright (c) 2009-2011 Matthew Knight (http://www.reconstrukt.com http://slu.sh)
+ *                         Patrice Blanchardie (http://www.inisos.com)
  *
  * Dual licensed under the MIT (http://www.opensource.org/licenses/mit-license.php)
  * and GPL (http://www.opensource.org/licenses/gpl-license.php) licenses.
@@ -217,7 +217,7 @@ jQuery.fn.ingrid = function(o){
 				var th 		= jQuery(this).parent();
 				pos = jQuery(this).offset();
 
-				var left  = $(window).scrollLeft()+e.clientX;
+				var left  = jQuery(window).scrollLeft()+e.clientX;
 
 				z.resizeStart(th, left, jQuery(this));
 			});
@@ -261,10 +261,10 @@ jQuery.fn.ingrid = function(o){
 									// on mousemove, move the vertical-resize-divider
 									var th 		= e.data.col;
 									var pos		= th.offset();
-									var col_w	= $(window).scrollLeft()+e.clientX - pos.left;
+									var col_w	= jQuery(window).scrollLeft()+e.clientX - pos.left;
 									// make sure cursor isn't trying to make column smaller than minimum
 									if (col_w > cfg.minColWidth) {
-										jQuery('#' + z_sel).css('left', $(window).scrollLeft()+e.clientX);
+										jQuery('#' + z_sel).css('left', jQuery(window).scrollLeft()+e.clientX);
 									}
 								});
 								jQuery('body').bind('mouseup', {col : th}, function(e){
@@ -280,7 +280,7 @@ jQuery.fn.ingrid = function(o){
 									jQuery('#' + z_sel).hide();
 									var th 		= e.data.col;
 									var pos		= th.offset();
-									var col_w	= $(window).scrollLeft()+e.clientX - pos.left;
+									var col_w	= jQuery(window).scrollLeft()+e.clientX - pos.left;
 									
 									if (col_w > cfg.minColWidth) {
 										th.trigger('resizeColumn', [col_w]);
@@ -613,7 +613,6 @@ jQuery.fn.ingrid = function(o){
 
 		saveSelectedRows : function() {
 			if (jQuery.cookie) {
-				//var row_ids		= g.getSelectedRowIds();
 				var row_ids = g.selected_ids;
 				if(row_ids.length > 0)
 					jQuery.cookie( this.attr('id') + '_rows', row_ids.join(','), {expires: cfg.cookieExpiresDays, path: cfg.cookiePath});
@@ -677,26 +676,16 @@ jQuery.fn.ingrid = function(o){
 
 		unSelectAll : function() {
 			g.getSelectedRows().each(function() {
-				$(this).attr("_selected", "true");
-				$(this).click();
+				jQuery(this).attr("_selected", "true");
+				jQuery(this).click();
 			});
 		},
 
 		selectAll : function() {
 			this.find("tbody tr").each(function() {
-				$(this).attr("_selected", "false");
-				$(this).click();
+				jQuery(this).attr("_selected", "false");
+				jQuery(this).click();
 			});
-		},
-
-		// old - returns an array of IDs (current view)
-		getSelectedRowIds : function() {
-			var rows 			= g.getSelectedRows();
-			var row_ids		= [];
-			for (i=0; i<rows.length; i++) {
-				if ( jQuery(rows[i]).attr('id') ) row_ids.push( jQuery(rows[i]).attr('id') );
-			}
-			return row_ids;
 		},
 
 		// returns an array of IDs (saved in cookie)
