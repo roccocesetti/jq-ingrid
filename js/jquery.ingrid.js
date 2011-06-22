@@ -15,7 +15,6 @@
 jQuery.fn.ingrid = function(o){
 
 	var cfg = {
-		height: 100,                                    // height of our datagrid (scrolling body area)
 
 		saveState: false,
 		savedStateLoad : false,                         // when Ingrid is initialized, should it load data from a previously saved state?
@@ -78,6 +77,7 @@ jQuery.fn.ingrid = function(o){
 		loadingHtml: '<div>&nbsp;</div>',
 		onLoadStart: function(){},
 		onLoadSuccess: function(data){},
+		onLoadComplete: function(){},
 
 		/* should seldom change */
 		resizeHandleHtml: '',					// resize handle html + css
@@ -235,11 +235,11 @@ jQuery.fn.ingrid = function(o){
 		var z	= jQuery('<div id="' + z_sel + '"></div>')
 						.css({
 							backgroundColor: '#ababab',
-							height: (cfg.headerHeight + cfg.height),
 							width: '4px',
 							position: 'absolute',
 							zIndex: '10',
-							display: 'block'
+							display: 'block',
+							opacity: '0.5'
 						})
 						.extend({
 							resizeStart : function(th, eventX, resizerobj){
@@ -254,7 +254,8 @@ jQuery.fn.ingrid = function(o){
 								var pos	= th.offset();
 								jQuery(this).show().css({
 									top: pos.top,
-									left: eventX
+									left: eventX,
+									height: (cfg.headerHeight + b.height())
 								});
 								// when resizing, bind some listeners for mousemove & mouseup events
 								jQuery('body').bind('mousemove', {col : th}, function(e){
@@ -501,13 +502,8 @@ jQuery.fn.ingrid = function(o){
 			cfg.onLoadStart();
 			var data = jQuery.extend(cfg.extraParams, params);
 
-			/*
-			alert(this + ' ...is jQuery')
-			alert(this[0] + ' ...is the div, id="' + this.attr('id') + '"')
-			*/
-
 			// show loading canvas
-			//modalmask.width(b.width()).show();
+			modalmask.width(b.width()).height(b.height()).show();
 			pload.addClass(cfg.pageLoadingClass);
 
 			// save selected rows
@@ -575,12 +571,10 @@ jQuery.fn.ingrid = function(o){
 					pv.html("An error occured.");
 				},
 				complete: function(){
-					//modalmask.hide();
+					modalmask.hide();
 					pload.removeClass(cfg.pageLoadingClass);
 					pload.addClass(cfg.pageLoadingDoneClass);
-					try{
-						postDownload();
-					}catch(e){}
+					cfg.onLoadComplete();
 				}
 			});
 			return this;
@@ -590,6 +584,7 @@ jQuery.fn.ingrid = function(o){
 		},
 		
 		clear: function() {
+			modalmask.hide();
 			b.html('<tr><td colspan="'+cols.length+'"></td></tr>');
 		},
 
@@ -875,7 +870,7 @@ jQuery.fn.ingrid = function(o){
 		g.resize();
 
 		// place the mask accordingly
-		modalmask.width( h.width() + cfg.scrollbarW ).height( b.height()).css({
+		modalmask.width( h.width() + cfg.scrollbarW ).height(b.height()).css({
 			top: b.offset().top,
 			left: b.offset().left
 		});
@@ -951,7 +946,3 @@ jQuery.fn.ingrid = function(o){
 	});
 
 };
-
-function postDownload(){
-	init();
-}
