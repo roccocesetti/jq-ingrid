@@ -8,7 +8,7 @@
  * and GPL (http://www.opensource.org/licenses/gpl-license.php) licenses.
  *
  * @requires jQuery v1.3+
- * @version 0.9.6
+ * @version 0.9.7
  *
  */
 
@@ -17,7 +17,7 @@ jQuery.fn.ingrid = function(o){
 	var cfg = {
 
 		saveState: false,
-		savedStateLoad : false,                         // when Ingrid is initialized, should it load data from a previously saved state?
+		savedStateLoad : false,						 // when Ingrid is initialized, should it load data from a previously saved state?
 		initialLoad : false,				// when Ingrid is initialized, should it load data immediately?
 		preselect : false,
 		
@@ -33,7 +33,7 @@ jQuery.fn.ingrid = function(o){
 		rowHoverClass: 'grid-row-hover',		// hovering over a row? use this class
 		rowSelection: true,				// allow row selection?
 		rowSelectedClass: 'grid-row-sel',		// selecting a row? use this class
-		onRowSelect: function(tr, selected){},	        // function to call when row is clicked
+		onRowSelect: function(tr, selected){},			// function to call when row is clicked
 
 		/* sorting */
 		sorting: true,
@@ -49,10 +49,10 @@ jQuery.fn.ingrid = function(o){
 		unsortableCols: [],				// do not make theses columns sortable
 
 		/* paging */
-		p_id: null,                     // id of paging toolbar
+		p_id: null,					 // id of paging toolbar
 		paging: true,					// or... create a paging toolbar
 		pageNumber: 1,
-        pageSaved: true,
+		pageSaved: true,
 		recordsPerPage: 0,
 		totalRecords: 0,
 		pageToolbarHeight: 25,
@@ -66,7 +66,7 @@ jQuery.fn.ingrid = function(o){
 		pageLoadingClass: 'grid-page-loading',
 		pageLoadingDoneClass: 'grid-page-loading-done',
 		pageViewingRecordsInfoClass: 'grid-page-viewing-records-info',
-		pageChanged: function(p){},             // called when page changed (loading finished)
+		pageChanged: function(p){},			 // called when page changed (loading finished)
 
 		/* ajax stuff */
 		url: 'remote.php',						// url to fetch data
@@ -113,16 +113,15 @@ jQuery.fn.ingrid = function(o){
 		total_width += cfg.colWidths[i];
 	}
 
-	// break into 2 tables: header, body.
-	// create header table
 	var cols = new Array();
 	
+	// table header
 	var h = this.find('thead').height(cfg.headerHeight)
-    .addClass(cfg.headerClass)
-    .height(cfg.headerHeight)
-    .extend({
-      cols : cols
-    });
+	.addClass(cfg.headerClass)
+	.height(cfg.headerHeight)
+	.extend({
+	  cols : cols
+	});
 
 
 	// initialize columns
@@ -132,14 +131,13 @@ jQuery.fn.ingrid = function(o){
 		jQuery(this).width(cfg.colWidths[i]);
 
 		// put column text in a div, make unselectable
-		var col_label = jQuery('<div />')
-										.html(jQuery(this).html())
-										.css("float", "left")
-                                        .css("display", "block")
-										.css('-moz-user-select', 'none')
-										.css('-khtml-user-select', 'none')
-										.css('user-select', 'none')
-										.attr('unselectable', 'on');
+		var col_label = jQuery('<div />').html(jQuery(this).html())
+		                                 .css("float", "left")
+		                                 .css("display", "block")
+		                                 .css('-moz-user-select', 'none')
+		                                 .css('-khtml-user-select', 'none')
+		                                 .css('user-select', 'none')
+		                                 .attr('unselectable', 'on');
 
 		// column sorting?
 		if (cfg.sorting && cfg.isSortableCol(i)) {
@@ -152,8 +150,8 @@ jQuery.fn.ingrid = function(o){
 
 			col_label.addClass(cls).click(function(){
 				var dir = col_label.hasClass(cfg.sortNoneClass) ? cfg.sortDefaultDir
-						                                        : ( col_label.hasClass(cfg.sortAscClass) ? cfg.sortDescParam
-						                                        		                                 : cfg.sortAscParam );
+																: ( col_label.hasClass(cfg.sortAscClass) ? cfg.sortDescParam
+																										 : cfg.sortAscParam );
 
 				var params = { sort : key, dir : dir };
 				if (p) jQuery.extend(params, { page : p.getPage() } );
@@ -184,22 +182,22 @@ jQuery.fn.ingrid = function(o){
 		jQuery(this).bind('resizeColumn', {col_num : i}, function(e, w){
 
 			oldtotalw = g.width();
-			
-            oldw = jQuery(this).width();
-            d = (w - oldw);
+
+			oldw = jQuery(this).width();
+			d = (w - oldw);
 
 			// set new column width
 			jQuery(this).width(w);
 
 			// auto enlarge while header is > headerHeight (max 50 times)
-                        i = 0;
+			i = 0;
 			while(h.height()>cfg.headerHeight) {
-                            jQuery(this).width(w+=5);
-                            d = (w - oldw);
-                            if(++i == 50) break;
+				jQuery(this).width(w+=5);
+				d = (w - oldw);
+				if(++i == 50) break;
 			}
-                        
-            // set new global head table width
+						
+			// set new global head table width
 			g.width( oldtotalw + d );
 
 			// set body cells to this width
@@ -212,7 +210,8 @@ jQuery.fn.ingrid = function(o){
 		// append resize handle?
 		if (cfg.resizableCols) {
 			// make column headers resizable
-			var handle = jQuery('<div />').html(cfg.resizeHandleHtml == '' ? '-' : cfg.resizeHandleHtml).addClass(cfg.resizeHandleClass);
+			var handle = jQuery('<div />').html(cfg.resizeHandleHtml == '' ? '-' : cfg.resizeHandleHtml)
+										  .addClass(cfg.resizeHandleClass);
 			handle.bind('mousedown', function(e){
 				// start resize drag
 				var th 		= jQuery(this).parent();
@@ -270,11 +269,11 @@ jQuery.fn.ingrid = function(o){
 								});
 								jQuery('body').bind('mouseup', {col : th}, function(e){
 								
-								jQuery("body").css('-webkit-user-select', 'auto')
-								              .css('-khtml-user-select', 'normal')
-								              .css('-moz-user-select', 'normal')
-								              .css('-o-user-select', 'normal')
-								              .css('user-select', 'normal');
+									jQuery("body").css('-webkit-user-select', 'auto')
+												  .css('-khtml-user-select', 'normal')
+												  .css('-moz-user-select', 'normal')
+												  .css('-o-user-select', 'normal')
+												  .css('user-select', 'normal');
 									
 									jQuery(this).unbind('mousemove').unbind('mouseup');
 									
@@ -302,8 +301,8 @@ jQuery.fn.ingrid = function(o){
 			var totp = Math.ceil(cfg.totalRecords / totr);
 		}
 		
-		var p;     // paging toolbar
-		var pv;    // view info
+		var p;	 // paging toolbar
+		var pv;	// view info
 		var pb1;   // start page
 		var pb2;   // prev page
 		var pb3;   // next page
@@ -381,12 +380,12 @@ jQuery.fn.ingrid = function(o){
 			updateViewInfo : function(loaded_rows, page) {
 				var _start = ( (cfg.recordsPerPage * (page - 1) + 1) );
 				if (cfg.totalRecords > 0) {
-                    _end   = ( (cfg.recordsPerPage * page) > cfg.totalRecords ? cfg.totalRecords : cfg.recordsPerPage * page );
-                    this.html('Viewing&nbsp;Rows&nbsp;' + _start + '&nbsp;-&nbsp;' + _end + '&nbsp;of&nbsp;' + cfg.totalRecords);
-                } else {
-                    _end   = _start + cfg.recordsPerPage;
-                    this.html('Viewing&nbsp;Rows&nbsp;' + _start + '&nbsp;-&nbsp;' + _end);
-                }
+					_end   = ( (cfg.recordsPerPage * page) > cfg.totalRecords ? cfg.totalRecords : cfg.recordsPerPage * page );
+					this.html('Viewing&nbsp;Rows&nbsp;' + _start + '&nbsp;-&nbsp;' + _end + '&nbsp;of&nbsp;' + cfg.totalRecords);
+				} else {
+					_end   = _start + cfg.recordsPerPage;
+					this.html('Viewing&nbsp;Rows&nbsp;' + _start + '&nbsp;-&nbsp;' + _end);
+				}
 				return this;
 			}
 		});
@@ -462,9 +461,9 @@ jQuery.fn.ingrid = function(o){
 	// append & extend grid {g} with header {h}, body {b}, paging {p}, resize handle {z}
 	
 	var g = jQuery('<table cellpadding="0" cellspacing="0"></table>')
-    .width( total_width )
-    .addClass(cfg.gridClass)
-    .append(h).append(b)
+	.width( total_width )
+	.addClass(cfg.gridClass)
+	.append(h).append(b)
 	.extend({
 		h : h,
 		b : b
@@ -749,8 +748,8 @@ jQuery.fn.ingrid = function(o){
 			// initialize properties on rows & columns
 
 			// pre-selected rows
-            if(cfg.preselect)
-                g.selected_ids = g.getSavedRowIds();
+			if(cfg.preselect)
+				g.selected_ids = g.getSavedRowIds();
 
 			this.getRows().each(function(r){
 
@@ -764,8 +763,14 @@ jQuery.fn.ingrid = function(o){
 					if (cfg.rowHoverClass != '') {
 						// hover class
 						jQuery(this).hover(
-							function() { if (jQuery(this).attr('_selected') != 'true') jQuery(this).removeClass(cfg.rowClasses[cursor]).addClass(cfg.rowHoverClass); },
-							function() { if (jQuery(this).attr('_selected') != 'true') jQuery(this).removeClass(cfg.rowHoverClass).addClass(cfg.rowClasses[cursor]); }
+							function() {
+								if (jQuery(this).attr('_selected') != 'true')
+									jQuery(this).removeClass(cfg.rowClasses[cursor]).addClass(cfg.rowHoverClass);
+							},
+							function() {
+								if (jQuery(this).attr('_selected') != 'true')
+									jQuery(this).removeClass(cfg.rowHoverClass).addClass(cfg.rowClasses[cursor]);
+							}
 						);
 					}
 				}
@@ -806,13 +811,10 @@ jQuery.fn.ingrid = function(o){
 						}
 
 						// callback
-						if (cfg.onRowSelect)
-							cfg.onRowSelect(this, (jQuery(this).attr('_selected') == 'true') );
+						cfg.onRowSelect(this, (jQuery(this).attr('_selected') == 'true') );
 					});
 
 					// previously selected rows
-					// (use table instead of str)
-					//if (jQuery(this).attr('id') && str_ids.indexOf( '|' + jQuery(this).attr('id') + '|' ) != -1) {
 					if (jQuery(this).attr('id')!=undefined && jQuery.inArray(jQuery(this).attr('id'), g.selected_ids) != -1) {
 						// switch to selected state
 						jQuery(this).attr('_selected', 'true').addClass(cfg.rowSelectedClass);
@@ -820,8 +822,7 @@ jQuery.fn.ingrid = function(o){
 						if(jQuery(this).attr('id') == undefined || jQuery.inArray(jQuery(this).attr('id'), g.selected_ids) == -1)
 							g.selected_ids.push(jQuery(this).attr('id'));
 						// callback
-						if (cfg.onRowSelect)
-							cfg.onRowSelect(this, true);
+						cfg.onRowSelect(this, true);
 					}
 				}
 			});
@@ -831,7 +832,7 @@ jQuery.fn.ingrid = function(o){
 	// don't break the chain
 	// return a modified & extended jQ table object.
 	// here,
-	// 	this     ...is jQuery
+	// 	this	 ...is jQuery
 	// 	this[0]  ...is a table
 
 	/*
@@ -843,7 +844,7 @@ jQuery.fn.ingrid = function(o){
 	return this.each(function(tblIter){
 		// fires for each table[tblIter].
 		// for each one,
-		// 	this     ...is a table
+		// 	this	 ...is a table
 
 		/*
 		alert(this + ' ...is a table [' + tblIter + '] , id="' + jQuery(this).attr('id') + '"')
