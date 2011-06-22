@@ -532,7 +532,8 @@ jQuery.fn.ingrid = function(o){
 					}
 					// for HTML (Table) return type
 					if (cfg.dataType == 'html') {
-						var $tbl = jQuery(result);
+						var tmp = jQuery("<div />").html(result);
+						var $tbl = tmp.find("tbody");
 						var row  = $tbl.find('tr:first');
 						if ( jQuery(row).find('td').length == cfg.colWidths.length ) {
 							// setting width on first row keeps it from "blinking"
@@ -540,7 +541,7 @@ jQuery.fn.ingrid = function(o){
 								jQuery(this).width( g.getHeader(i).css('width') );
 							});
 							// now swap the tbody's
-							b.html($tbl.find('tbody').html());
+							b.html($tbl.html());
 							g.initStylesAndWidths();
 							
 							pb3.click(nextPage);
