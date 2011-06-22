@@ -499,7 +499,11 @@ jQuery.fn.ingrid = function(o){
 
 		load : function(params, cb) {
 			cfg.onLoadStart();
+			
 			var data = jQuery.extend(cfg.extraParams, params);
+			
+			// random query string (bypass cache)
+			data.rand = Math.random();
 
 			// show loading canvas
 			modalmask.width(b.width()).height(b.height()).show();
@@ -510,7 +514,7 @@ jQuery.fn.ingrid = function(o){
 
 			jQuery.ajax({
 				type: cfg.type.toUpperCase(),
-				url: cfg.url + "&rand="+Math.random(),
+				url: cfg.url,
 				data: data,
 				success: function(result){
 					cfg.onLoadSuccess(result);
