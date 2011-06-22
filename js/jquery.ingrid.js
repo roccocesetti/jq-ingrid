@@ -76,6 +76,8 @@ jQuery.fn.ingrid = function(o){
 		extraParams: {},						// a map of extra params to send to the server
 		loadingClass: 'grid-loading',			// loading modalmask div
 		loadingHtml: '<div>&nbsp;</div>',
+		onLoadStart: function(){},
+		onLoadSuccess: function(data){},
 
 		/* should seldom change */
 		resizeHandleHtml: '',					// resize handle html + css
@@ -241,6 +243,13 @@ jQuery.fn.ingrid = function(o){
 						})
 						.extend({
 							resizeStart : function(th, eventX, resizerobj){
+							
+								jQuery("body").css('-webkit-user-select', 'none')
+								              .css('-khtml-user-select', 'none')
+								              .css('-moz-user-select', 'none')
+								              .css('-o-user-select', 'none')
+								              .css('user-select', 'none');
+							
 								// this is fired onmousedown of the column's resize handle
 								var pos	= th.offset();
 								jQuery(this).show().css({
@@ -259,15 +268,20 @@ jQuery.fn.ingrid = function(o){
 									}
 								});
 								jQuery('body').bind('mouseup', {col : th}, function(e){
-									// on mouseup,
-									// 1.) unbind resize listener events from body
-									// 2.) hide the vertical-resize-divider
-									// 3.) trigger the resize event on the column
+								
+								jQuery("body").css('-webkit-user-select', 'auto')
+								              .css('-khtml-user-select', 'normal')
+								              .css('-moz-user-select', 'normal')
+								              .css('-o-user-select', 'normal')
+								              .css('user-select', 'normal');
+									
 									jQuery(this).unbind('mousemove').unbind('mouseup');
+									
 									jQuery('#' + z_sel).hide();
 									var th 		= e.data.col;
 									var pos		= th.offset();
 									var col_w	= $(window).scrollLeft()+e.clientX - pos.left;
+									
 									if (col_w > cfg.minColWidth) {
 										th.trigger('resizeColumn', [col_w]);
 									} else {
@@ -484,7 +498,7 @@ jQuery.fn.ingrid = function(o){
 		selected_ids : [],
 
 		load : function(params, cb) {
-			$("#dialog_loading").dialog('open');
+			cfg.onLoadStart();
 			var data = jQuery.extend(cfg.extraParams, params);
 
 			/*
@@ -504,7 +518,7 @@ jQuery.fn.ingrid = function(o){
 				url: cfg.url + "&rand="+Math.random(),
 				data: data,
 				success: function(result){
-					$("#dialog_loading").dialog('close');
+					cfg.onLoadSuccess(result);
 					if(result == "") {
 						g.clear();
 						pv.html("An error has occured.");
