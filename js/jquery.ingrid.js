@@ -9,33 +9,6 @@
  *
  * @requires jQuery v1.3+
  * @version 0.9.6
- * @todo load JSON data, etc.
- *
- * Revision: 0.9.3 2009/06/26 Patrice Blanchardie
- * - bug fixes: selection behaviour,
- *              hscroll width,
- *              attribute selector,
- *              result error handler,
- *              header auto-resize
- * - feature: new param: unsortable columns
- *
- * Revision: 0.9.4 2009/06/29 Patrice Blanchardie
- * - bug fixes: unable to clear last selected row from cookie
- *              added onRowSelect callback during pre-selection
- * - feature: new functions : (un)select all
- *            selection is now stored for all pages!
- *            page changed callback
- *
- * Revision: 0.9.5 2009/08/19 Patrice Blanchardie
- * - new feature: large (wide) grids
- *                force page number
- * - bug fixes: resizing when hscroll present
- * - fix IE cache
- * 
- * Revision: 0.9.6 2009/09/10 Patrice Blanchardie
- * - change: no scroll on body
- * - pre-existent paging toolbar support
- * - fix: compatibility
  *
  */
 
@@ -141,25 +114,6 @@ jQuery.fn.ingrid = function(o){
 	// break into 2 tables: header, body.
 	// create header table
 	var cols = new Array();
-	/** OLD
-	 * var h = jQuery('<div />')
-	           .html(jQuery('<div id="divhead2" />')
-	        		    .width( total_width )
-                        .html(
-			               jQuery('<table cellpadding="0" cellspacing="0"></table>')
-			               .html(this.find('thead'))
-			               .addClass(cfg.gridClass)
-			               .addClass(cfg.headerClass)
-			               .height(cfg.headerHeight)
-			               .extend({
-			          	      cols : cols
-			               })
-			            )
-			         )
-	                 .css('overflow', 'hidden')
-		             .height(cfg.headerHeight);
-	*/
-	
 	
 	var h = this.find('thead').height(cfg.headerHeight)
     .addClass(cfg.headerClass)
@@ -244,10 +198,6 @@ jQuery.fn.ingrid = function(o){
 			}
                         
             // set new global head table width
-            /**
-             * OLD
-             * h.find('div#divhead2').width( h.find('div#divhead2').width() + d );
-             */
 			g.width( oldtotalw + d );
 
 			// set body cells to this width
@@ -273,26 +223,7 @@ jQuery.fn.ingrid = function(o){
 			jQuery(this).append(handle);
 		}
 	});
-
-	/** OLD
-	// create body table. surround body with container div for scrolling
-	// setting width on first row keeps it from "blinking"
-	var row = this.find('tr:first');
-	jQuery(row).find('td').each(function(i){
-		jQuery(this).width( cfg.colWidths[i] );
-	});
-	*/
-	/**
-	 * OLD
-	 *var b = jQuery('<div />')
-					.html( jQuery('<table cellpadding="0" cellspacing="0"></table>')
-						       .html( this.find('tbody') )
-						       .width( h.width() )
-						       .addClass(cfg.gridClass) )
-					.css('overflow-y', 'auto')
-					.css('overflow-x', 'hidden')
-					.height(cfg.height);
-	 */
+	
 	var b = this.find('tbody').addClass(cfg.gridClass);
 
 	// resizable cols?
@@ -387,10 +318,6 @@ jQuery.fn.ingrid = function(o){
 		else {
 			p = jQuery('<div />')
 			.addClass(cfg.pageToolbarClass)
-			/**
-			 * OLD
-			 *.width(b.width())
-			 */
 			.height(cfg.pageToolbarHeight);
 			
 			pv = jQuery('<div />').addClass(cfg.pageViewingRecordsInfoClass);
@@ -436,7 +363,7 @@ jQuery.fn.ingrid = function(o){
 		});
 		
 		pv.extend({
-			updateViewInfo : function(loaded_rows, page){
+			updateViewInfo : function(loaded_rows, page) {
 				var _start = ( (cfg.recordsPerPage * (page - 1) + 1) );
 				if (cfg.totalRecords > 0) {
                     _end   = ( (cfg.recordsPerPage * page) > cfg.totalRecords ? cfg.totalRecords : cfg.recordsPerPage * page );
@@ -507,7 +434,7 @@ jQuery.fn.ingrid = function(o){
 			pb4.click(function(){
 				var _p = p.getPage(); _p++;
 				if (totp) {
-					 if (_p < totp) p.setPage(totp);
+					 if (_p <= totp) p.setPage(totp);
 				}
 			});
 		} else {
@@ -518,13 +445,6 @@ jQuery.fn.ingrid = function(o){
 
 	// create a container div to for our main grid object
 	// append & extend grid {g} with header {h}, body {b}, paging {p}, resize handle {z}
-	/**
-	 * OLD
-	 *var g = jQuery('<div />').append(h).append(b).extend({
-		h : h,
-		b : b
-	});
-	 */
 	
 	var g = jQuery('<table cellpadding="0" cellspacing="0"></table>')
     .width( total_width )
@@ -536,10 +456,6 @@ jQuery.fn.ingrid = function(o){
 	});
 
 	if (cfg.paging) {
-		/**
-		 * OLD
-		 *g.append(p).extend({ p : p });
-		 */
 		
 		if(total_width > 400) {
 			p.width(total_width);
@@ -547,10 +463,6 @@ jQuery.fn.ingrid = function(o){
 		g.extend({ p : p });
 	}
 	if (cfg.resizableCols) {
-		/**
-		 * OLD
-		 *g.append(z.hide()).extend({ z : z });
-		 */
 		g.extend({ z : z });
 	}
 
@@ -594,7 +506,9 @@ jQuery.fn.ingrid = function(o){
 				success: function(result){
 					$("#dialog_loading").dialog('close');
 					if(result == "") {
-						pv.html("Error: empty result");
+						g.clear();
+						pv.html("An error has occured.");
+						alert("An error has occured.");
 						return;
 					}
 					// for JSON return type
@@ -612,10 +526,6 @@ jQuery.fn.ingrid = function(o){
 								jQuery(this).width( g.getHeader(i).css('width') );
 							});
 							// now swap the tbody's
-							/**
-							 * OLD
-							 *b.find('tbody').html($tbl.find('tbody').html());
-							 */
 							b.html($tbl.find('tbody').html());
 							g.initStylesAndWidths();
 							
@@ -632,15 +542,16 @@ jQuery.fn.ingrid = function(o){
 
 						} else if (row.length < 1) {
 							// no rows returned
+							g.clear();
 							pv.html("No result found.");
 							alert("No result found.");
 							// disable next page button
 							pb3.unbind("click");
-							b.html('<tr><td colspan="'+cols.length+'"></td></tr>');
 						} else {
 							// inconsistent results... too many (or too few) columns returned
-							alert("Error: inconsistent result");
+							g.clear();
 							pv.html("Error: inconsistent result.");
+							alert("Error: inconsistent result");
 						}
 					}
 					if (cb) cb();
@@ -661,6 +572,10 @@ jQuery.fn.ingrid = function(o){
 		},
 		reload: function(){
 			g.load();
+		},
+		
+		clear: function() {
+			b.html('<tr><td colspan="'+cols.length+'"></td></tr>');
 		},
 
 		// returns JSON
@@ -849,13 +764,6 @@ jQuery.fn.ingrid = function(o){
 				jQuery(this).find('td').each(function(i){
 					// column IDs & width
 					// wrap the cell text in a div with overflow hidden, so cells aren't stretched wider by long text
-					/**
-					 * OLD
-					var txt = jQuery(this).html();
-					jQuery(this).attr(cfg.columnIDAttr, i)
-											.width(colWidths[i])
-											.html( jQuery('<div />').html(txt).css('overflow', 'hidden') );
-					 */
 
 					jQuery(this).attr(cfg.columnIDAttr, i).width(colWidths[i]).css('overflow', 'hidden');
 					
@@ -1022,6 +930,7 @@ jQuery.fn.ingrid = function(o){
 
 	}).extend({
 
+		cfg : cfg,
 		g : g
 
 	});
