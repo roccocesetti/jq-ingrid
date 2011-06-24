@@ -1,7 +1,5 @@
 #summary List of parameters for Ingrid 0.9.8
 
-Parameters (v0.9.8)
-
 || *parameter* || *default value* || *description*  ||
 || saveState || FALSE ||   ||
 || savedStateLoad  || FALSE ||  when Ingrid is initialized, should it load data from a previously saved state? ||
