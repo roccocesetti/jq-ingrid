@@ -8,7 +8,7 @@
  * and GPL (http://www.opensource.org/licenses/gpl-license.php) licenses.
  *
  * @requires jQuery v1.3+
- * @version 0.9.7
+ * @version 0.9.8
  *
  */
 
@@ -49,8 +49,8 @@ jQuery.fn.ingrid = function(o){
 		unsortableCols: [],				// do not make theses columns sortable
 
 		/* paging */
-		p_id: null,					 // id of paging toolbar
-		paging: true,					// or... create a paging toolbar
+		p_id: null,					 // id of existent paging toolbar
+		paging: true,					// paging toolbar enabled?
 		pageNumber: 1,
 		pageSaved: true,
 		recordsPerPage: 0,
@@ -507,7 +507,8 @@ jQuery.fn.ingrid = function(o){
 
 			// show loading canvas
 			modalmask.width(b.width()).height(b.height()).show();
-			pload.addClass(cfg.pageLoadingClass);
+			if(typeof(pload) != 'undefined')
+				pload.addClass(cfg.pageLoadingClass);
 
 			// save selected rows
 			g.saveSelectedRows();
@@ -543,7 +544,9 @@ jQuery.fn.ingrid = function(o){
 							b.html($tbl.html());
 							g.initStylesAndWidths();
 							
-							pb3.click(nextPage);
+							// enable next page button
+							if(cfg.pageable)
+								pb3.click(nextPage);
 
 							var totr = b.find('tr').length;
 							if(!data.page) {
@@ -560,7 +563,8 @@ jQuery.fn.ingrid = function(o){
 							pv.html("No result found.");
 							alert("No result found.");
 							// disable next page button
-							pb3.unbind("click");
+							if(cfg.pageable)
+								pb3.unbind("click");
 						} else {
 							// inconsistent results... too many (or too few) columns returned
 							g.clear();
@@ -575,8 +579,10 @@ jQuery.fn.ingrid = function(o){
 				},
 				complete: function(){
 					modalmask.hide();
-					pload.removeClass(cfg.pageLoadingClass);
-					pload.addClass(cfg.pageLoadingDoneClass);
+					if(typeof(pload) != 'undefined') {
+						pload.removeClass(cfg.pageLoadingClass);
+						pload.addClass(cfg.pageLoadingDoneClass);
+					}
 					cfg.onLoadComplete();
 				}
 			});
