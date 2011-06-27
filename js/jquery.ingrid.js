@@ -8,7 +8,7 @@
  * and GPL (http://www.opensource.org/licenses/gpl-license.php) licenses.
  *
  * @requires jQuery v1.3+
- * @version 0.9.8
+ * @version 0.9.9
  *
  */
 
@@ -521,7 +521,8 @@ jQuery.fn.ingrid = function(o){
 					cfg.onLoadSuccess(result);
 					if(result == "") {
 						g.clear();
-						pv.html("An error has occured.");
+						if(cfg.paging)
+							pv.html("An error has occured.");
 						alert("An error has occured.");
 						return;
 					}
@@ -543,16 +544,17 @@ jQuery.fn.ingrid = function(o){
 							// now swap the tbody's
 							b.html($tbl.html());
 							g.initStylesAndWidths();
-							
-							// enable next page button
-							if(cfg.pageable)
-								pb3.click(nextPage);
 
 							var totr = b.find('tr').length;
 							if(!data.page) {
 								data.page = 1;
 							}
-							pv.updateViewInfo(totr, data.page);
+							
+							if(cfg.paging) {
+								pv.updateViewInfo(totr, data.page);
+								// enable next page button
+								pb3.click(nextPage);
+							}
 
 							// remember the last loaded state for this grid?
 							g.saveState(data);
@@ -560,22 +562,27 @@ jQuery.fn.ingrid = function(o){
 						} else if (row.length < 1) {
 							// no rows returned
 							g.clear();
-							pv.html("No result found.");
-							alert("No result found.");
-							// disable next page button
-							if(cfg.pageable)
+							if(cfg.paging) {
+								pv.html("No result found.");
+								// disable next page button
 								pb3.unbind("click");
+							}
+							alert("No result found.");
 						} else {
 							// inconsistent results... too many (or too few) columns returned
 							g.clear();
-							pv.html("Error: inconsistent result.");
+							if(cfg.paging) {
+								pv.html("Error: inconsistent result.");
+							}
 							alert("Error: inconsistent result");
 						}
 					}
 					if (cb) cb();
 				},
 				error: function(req, status, ex){
-					pv.html("An error occured.");
+					if(cfg.paging)
+						pv.html("An error occured.");
+					alert("An error occured");
 				},
 				complete: function(){
 					modalmask.hide();
